@@ -4,7 +4,6 @@ import org.soul.runnable.ServerThread;
 import org.soul.runnable.TimerThread;
 import org.soul.tool.StudentList;
 
-import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +26,7 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new Server().start();
     }
 }
