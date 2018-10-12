@@ -31,13 +31,23 @@ public class GameApplicationController {
         });
 
         applicationModel.getSubmit().setOnAction(event -> {
-            String answer = applicationModel.getAnswer().getText().trim();
+            String idiom;
+            if (applicationModel.getIsQuestion()) {
+                //老师出题阶段
+                idiom = applicationModel.getQuestionTextField().getText().trim();
+                applicationModel.setIsQuestion(false);
+                applicationModel.getQuestionTextField().setEditable(false);
+                applicationModel.getAnswerTextField().setEditable(true);
+            } else {
+                //学生回答阶段
+                idiom = applicationModel.getAnswerTextField().getText().trim();
+            }
             applicationModel.getSubmit().setDisable(true);
             applicationModel.getTip().setText("");
-            applicationModel.getAnswer().setText("");
-            applicationModel.getIdiomTextField().setText("");
+            applicationModel.getAnswerTextField().setText("");
+            applicationModel.getQuestionTextField().setText("");
             try {
-                ThreadAdapter.sendMessage(mySocket, answer);
+                ThreadAdapter.sendMessage(mySocket, idiom);
             } catch (IOException e) {
                 e.printStackTrace();
             }

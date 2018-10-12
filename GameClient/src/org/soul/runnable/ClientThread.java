@@ -65,14 +65,29 @@ public class ClientThread implements Runnable {
                         applicationModel.getTip().setText("请老师出题");
                         applicationModel.getTip().setFill(Color.RED);
                         applicationModel.getSubmit().setDisable(false);
+                        applicationModel.setIsQuestion(true);
+                        applicationModel.getQuestionTextField().setEditable(true);
+                        applicationModel.getAnswerTextField().setEditable(false);
                         break;
                     }
                     case "QUESTION": {
                         String question = tokens.nextToken();
-                        applicationModel.getIdiomTextField().setText(question);
-                        applicationModel.getTip().setText("请答题");
-                        applicationModel.getTip().setFill(Color.RED);
+                        applicationModel.getQuestionTextField().setText(question);
                         applicationModel.getSubmit().setDisable(false);
+                        break;
+                    }
+                    case "TIMER": {
+                        String time = tokens.nextToken();
+                        applicationModel.getTip().setText("请答题,剩余时间" + time);
+                        applicationModel.getTip().setFill(Color.RED);
+                        break;
+                    }
+                    case "TIMERISOUT": {
+                        applicationModel.getSubmit().setDisable(true);
+                        applicationModel.getTip().setText("您已超时");
+                        applicationModel.getTip().setFill(Color.RED);
+                        applicationModel.getAnswerTextField().setText("");
+                        applicationModel.getQuestionTextField().setText("");
                         break;
                     }
                     case "BROADCAST": {
@@ -88,6 +103,7 @@ public class ClientThread implements Runnable {
                 }
             } catch (IOException e) {
                 applicationModel.getTip().setText("服务器连接断开");
+                applicationModel.getTip().setFill(Color.BLACK);
                 try {
                     mySocket.close();
                 } catch (IOException e1) {

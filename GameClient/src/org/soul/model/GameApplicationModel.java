@@ -22,10 +22,11 @@ public class GameApplicationModel {
     private Scene scene;
     private Text sceneTitle, tip;
     private Label ip, id, name, idiom, connection;
-    private TextField ipTextField, idTextField, nameTextField, idiomTextField, connectionTextField;
+    private TextField ipTextField, idTextField, nameTextField, questionTextField, answerTextField;
     private Button register, submit;
     private ImageView imageView;
     private TextArea process;
+    private boolean isQuestion = false;
 
     public GameApplicationModel() {
         GridPane grid = new GridPane();
@@ -55,14 +56,14 @@ public class GameApplicationModel {
         ipTextField = new TextField();
         idTextField = new TextField();
         nameTextField = new TextField();
-        idiomTextField = new TextField();
-        idiomTextField.setEditable(false);
-        connectionTextField = new TextField();
+        questionTextField = new TextField();
+        questionTextField.setEditable(false);
+        answerTextField = new TextField();
         grid.add(ipTextField, 0, 2);
         grid.add(idTextField, 0, 4);
         grid.add(nameTextField, 0, 6);
-        grid.add(idiomTextField, 5, 4);
-        grid.add(connectionTextField, 5, 6);
+        grid.add(questionTextField, 5, 4);
+        grid.add(answerTextField, 5, 6);
 
         register = new Button("注册");
         register.setMinSize(200, 20);
@@ -129,11 +130,19 @@ public class GameApplicationModel {
         return process;
     }
 
-    public TextField getAnswer() {
-        return connectionTextField;
+    public TextField getAnswerTextField() {
+        return answerTextField;
     }
 
-    public TextField getIdiomTextField(){
-        return idiomTextField;
+    public TextField getQuestionTextField() {
+        return questionTextField;
+    }
+
+    public boolean getIsQuestion() {
+        return isQuestion;
+    }
+
+    public void setIsQuestion(boolean isQuestion) {
+        this.isQuestion = isQuestion;
     }
 }

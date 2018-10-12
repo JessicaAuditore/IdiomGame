@@ -111,7 +111,10 @@ public class ThreadAdapter {
                 clientThread.getMySocket().getWriter().flush();
             }
         }
-        broadcast("BROADCAST@请" + ServerThread.studentList.get(number).getName() + "同学答题");
+        broadcast("BROADCAST@请" + ServerThread.studentList.get(number).getName() + "同学在60s内答题");
+        //开始计时
+        TimerThread.answerIsStart = true;
+        TimerThread.time = 60;
     }
 
 

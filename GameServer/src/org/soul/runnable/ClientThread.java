@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ClientThread implements Runnable {
 
-    private static Idiom question;
-    private static List<Idiom> answers;
+    public static Idiom question;
+    public static List<Idiom> answers;
 
     private IdiomDao idiomDao;
     private MySocket mySocket;
@@ -81,10 +81,9 @@ public class ClientThread implements Runnable {
                             ThreadAdapter.broadcast("BROADCAST@老师出题为" + question.getValue());
                             answers = idiomDao.selectSomeById(question.getId() + 1, question.getId() + ServerThread.studentList.size());
                         } else {
-                            //学生答题
                             if (!answer.equals(answers.get(ThreadAdapter.i - 1).getValue())) {
                                 //回答错误
-                                ThreadAdapter.broadcast("GAMESTOP@" + ServerThread.studentList.get(ThreadAdapter.i - 1).getName() + "回答错误,被淘汰,正确答案是" + answers.get(ThreadAdapter.i - 1).getValue() + ",游戏继续进行");
+                                ThreadAdapter.broadcast("GAMESTOP@" + ServerThread.studentList.get(ThreadAdapter.i - 1).getName() + "回答错误,被淘汰,正确答案是" + answers.get(ThreadAdapter.i - 1).getValue() + ",第二轮游戏继续进行");
                                 ServerThread.studentList.remove(ServerThread.studentList.get(ThreadAdapter.i - 1));
                                 //重置问题和轮转标志
                                 question = answers.get(ThreadAdapter.i - 1);
@@ -96,7 +95,7 @@ public class ClientThread implements Runnable {
                                 }
                             } else {
                                 //回答正确
-                                ThreadAdapter.broadcast("GAMESTOP@" + ServerThread.studentList.get(ThreadAdapter.i - 1).getName() + "同学回答正确");
+                                ThreadAdapter.broadcast("GAMESTOP@" + ServerThread.studentList.get(ThreadAdapter.i - 1).getName() + "同学回答正确:" + answer);
                                 question = idiomDao.selectOneByValue(answer);
                                 if (ThreadAdapter.i == ServerThread.studentList.size()) {
                                     answers = idiomDao.selectSomeById(question.getId() + 1, question.getId() + ServerThread.studentList.size());
@@ -113,4 +112,7 @@ public class ClientThread implements Runnable {
         }
     }
 
+    public IdiomDao getIdiomDao() {
+        return idiomDao;
+    }
 }
