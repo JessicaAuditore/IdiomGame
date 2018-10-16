@@ -1,5 +1,6 @@
 package org.soul.controller;
 
+import javafx.scene.paint.Color;
 import org.soul.common.ThreadAdapter;
 import org.soul.model.GameApplicationModel;
 import org.soul.rule.GameRule;
@@ -38,9 +39,19 @@ public class GameApplicationController {
                 applicationModel.setIsQuestion(false);
                 applicationModel.getQuestionTextField().setEditable(false);
                 applicationModel.getAnswerTextField().setEditable(true);
+                if (idiom.equals("")) {
+                    applicationModel.getTip().setText("出题不为空!");
+                    applicationModel.getTip().setFill(Color.RED);
+                    return;
+                }
             } else {
                 //学生回答阶段
                 idiom = applicationModel.getAnswerTextField().getText().trim();
+                if (idiom.equals("")) {
+                    applicationModel.getTip().setText("回答不为空!");
+                    applicationModel.getTip().setFill(Color.RED);
+                    return;
+                }
             }
             applicationModel.getSubmit().setDisable(true);
             applicationModel.getTip().setText("");
