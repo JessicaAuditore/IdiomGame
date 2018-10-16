@@ -1,9 +1,9 @@
 package org.soul.entity;
 
-public class Student extends Actor{
+public class Student extends Actor {
 
-    private String id;
-    private String name;
+    protected String id;
+    protected String name;
 
     public Student(String id, String name) {
         this.id = id;
@@ -32,7 +32,27 @@ public class Student extends Actor{
     }
 
     @Override
-    public int act() {
-        return 0;
+    public String login() {
+        return name + "同学上线";
+    }
+
+    @Override
+    public String correct() {
+        return name + "同学回答正确:";
+    }
+
+    @Override
+    public String overtime() {
+        return name + "同学回答超时,被淘汰";
+    }
+
+    @Override
+    public String error() {
+        return name + "同学回答错误,被淘汰";
+    }
+
+    @Override
+    public String win() {
+        return "游戏结束,赢者是" + name + "同学";
     }
 }

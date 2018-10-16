@@ -13,4 +13,8 @@ public class Tokenizer {
         tokenIndex++;
         return tokens[tokenIndex - 1];
     }
+
+    public int size() {
+        return tokens.length;
+    }
 }

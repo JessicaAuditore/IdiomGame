@@ -7,7 +7,17 @@ public class Teacher extends Student {
     }
 
     @Override
-    public int act() {
-        return 0;
+    public String login() {
+        return name + "老师上线";
+    }
+
+    @Override
+    public String correct() {
+        return name + "老师出题为:";
+    }
+
+    @Override
+    public String error() {
+        return name + "老师出题错误，游戏结束";
     }
 }

@@ -18,7 +18,7 @@ public class DBOperation {
     }
 
     //111.231.66.120
-    private String url = "jdbc:mysql://111.231.66.120:3306/uml?serverTimezone=GMT&useUnicode=true&characterEncoding=UTF8&useSSL=false";
+    private String url = "jdbc:mysql://localhost:3306/uml?serverTimezone=GMT&useUnicode=true&characterEncoding=UTF8&useSSL=false";
     private String username = "root";
     private String password = "xiaokaixian";
     private int maxConnection = 60;

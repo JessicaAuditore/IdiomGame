@@ -19,6 +19,7 @@ import org.soul.Client;
 public class GameApplicationModel {
 
     private final String title = "成语接龙游戏客户端 v2.0";
+    private final String instruction = "游戏说明:\n本游戏服务器启动后60s内完成注册\n若参与游戏的学生少于2人或者老师未上线，则游戏无法开始\n----------------";
     private Scene scene;
     private Text sceneTitle, tip;
     private Label ip, id, name, idiom, connection;
@@ -54,6 +55,7 @@ public class GameApplicationModel {
         grid.add(connection, 5, 5);
 
         ipTextField = new TextField();
+        ipTextField.setText("127.0.0.1");
         idTextField = new TextField();
         nameTextField = new TextField();
         questionTextField = new TextField();
@@ -87,8 +89,9 @@ public class GameApplicationModel {
         grid.add(pictureRegion, 9, 1, 2, 7);
 
         process = new TextArea();
-        process.setText("游戏实况:");
+        process.setText(instruction);
         process.setEditable(false);
+
         grid.add(process, 0, 8, 17, 7);
 
         scene = new Scene(grid, 800, 550);
@@ -128,6 +131,14 @@ public class GameApplicationModel {
 
     public TextArea getProcess() {
         return process;
+    }
+
+    public void setProcess(String content) {
+        getProcess().setText(content);
+    }
+
+    public void addProcess(String content) {
+        getProcess().appendText("\n" + content);
     }
 
     public TextField getAnswerTextField() {

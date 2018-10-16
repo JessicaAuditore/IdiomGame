@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class ClientThread implements Runnable {
 
-    private MySocket mySocket;
+    private MySocket socket;
     private GameApplicationModel applicationModel;
 
-    public ClientThread(MySocket mySocket, GameApplicationModel applicationModel) {
-        this.mySocket = mySocket;
+    public ClientThread(MySocket socket, GameApplicationModel applicationModel) {
+        this.socket = socket;
         this.applicationModel = applicationModel;
         new Thread(this).start();
     }
@@ -23,42 +23,21 @@ public class ClientThread implements Runnable {
     public void run() {
         while (true) {
             try {
-                String message = ThreadAdapter.getMessage(mySocket);
+                String message = ThreadAdapter.getMessage(socket);
                 Tokenizer tokens = new Tokenizer(message, "@");
                 String messageType = tokens.nextToken();
                 switch (messageType) {
                     case "REGISTERSUCCESS": {
                         String tip = tokens.nextToken();
-                        applicationModel.getProcess().setText(applicationModel.getProcess().getText() + "\n" + tip);
+                        applicationModel.addProcess(tip);
                         applicationModel.getRegister().setDisable(true);
                         break;
                     }
                     case "REGISTERFAIL": {
-                        applicationModel.getTip().setText("已连接服务器");
                         String tip = tokens.nextToken();
-                        applicationModel.getProcess().setText(applicationModel.getProcess().getText() + "\n" + tip);
-                        break;
-                    }
-                    case "LOGIN": {
-                        String name = tokens.nextToken();
-                        applicationModel.getProcess().setText(applicationModel.getProcess().getText() + "\n" + name + "上线");
-                        break;
-                    }
-                    case "GAMESTART": {
-                        applicationModel.getTip().setText("已连接服务器,停止学生注册");
-                        applicationModel.getProcess().setText("游戏开始,请老师出题");
-                        break;
-                    }
-                    case "GAMESTOP": {
-                        String tip = tokens.nextToken();
+                        applicationModel.addProcess(tip);
                         applicationModel.getTip().setText("已连接服务器");
                         applicationModel.getTip().setFill(Color.BLACK);
-                        applicationModel.getProcess().setText(applicationModel.getProcess().getText() + "\n" + tip);
-                        break;
-                    }
-                    case "TIP": {
-                        String tip = tokens.nextToken();
-                        applicationModel.getTip().setText(tip);
                         break;
                     }
                     case "SETQUESTION": {
@@ -92,10 +71,28 @@ public class ClientThread implements Runnable {
                     }
                     case "BROADCAST": {
                         String content = tokens.nextToken();
-                        applicationModel.getProcess().setText(applicationModel.getProcess().getText() + "\n" + content);
+                        Tokenizer tokenizer = new Tokenizer(content, "#");
+                        if (tokenizer.size() != 1) {
+                            switch (tokenizer.nextToken()) {
+                                case "TIP": {
+                                    String tip = tokenizer.nextToken();
+                                    applicationModel.getTip().setText(tip);
+                                    break;
+                                }
+                                case "GAMESTART": {
+                                    String tip = tokenizer.nextToken();
+                                    applicationModel.getTip().setText("已连接服务器,停止学生注册");
+                                    applicationModel.setProcess(tip);
+                                    break;
+                                }
+                            }
+                        } else {
+                            applicationModel.addProcess("广播消息：" + content);
+                            applicationModel.getTip().setText("已连接服务器");
+                            applicationModel.getTip().setFill(Color.BLACK);
+                        }
                         break;
                     }
-
                     default: {
                         System.out.println("客户端接受消息格式错误");
                         break;
@@ -103,9 +100,9 @@ public class ClientThread implements Runnable {
                 }
             } catch (IOException e) {
                 applicationModel.getTip().setText("服务器连接断开");
-                applicationModel.getTip().setFill(Color.BLACK);
+                applicationModel.getTip().setFill(Color.RED);
                 try {
-                    mySocket.close();
+                    socket.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
