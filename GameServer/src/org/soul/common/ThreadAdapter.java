@@ -110,11 +110,7 @@ public class ThreadAdapter {
 
     public static boolean updateAnswers(IdiomDao idiomDao) throws Exception {
         ClientThread.answers = idiomDao.selectSomeById(ClientThread.question.getId() + 1, ClientThread.question.getId() + ServerThread.studentList.size());
-        if (ClientThread.answers.size() == ServerThread.studentList.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return ClientThread.answers.size() == ServerThread.studentList.size();
     }
 
 
